@@ -1,0 +1,65 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyd
+*.so
+
+# C extensions
+*.dll
+*.dylib
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+lib/
+include/
+bin/
+share/
+local/
+build/
+develop-eggs/
+dist/
+eggs/
+.eggs/
+sdist/
+var/
+parts/
+binaries/
+.project
+.idea
+.vscode
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-arg.txt
+
+# Unit test / coverage reports
+.coverage
+.tox/
+.nox/
+
+# PyInstaller
+*.spec
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Django stuff:
+*.log
+*.pot
+*.mo
+local_settings.py
+db.sqlite3 
+db.sqlite3-journal
+media/ 
+static_root/ # Carpeta de estáticos compilados
+
+# Specific to Project
+*.env
+.env
+/.vscode 
