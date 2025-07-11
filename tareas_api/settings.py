@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'rest_framework',                  
     'rest_framework_simplejwt',        
     'tareas',                          
-    'django_filters',                  
+    'django_filters',  
+    'drf_yasg',                
 ]
 
 MIDDLEWARE = [
@@ -172,3 +173,24 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+# Configuración de DRF-YASG para Swagger/OpenAPI
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Token de autenticación JWT con prefijo "Bearer ". Ejemplo: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."'
+        }
+    },
+    'USE_SESSION_AUTH': False, # Deshabilita la autenticación de sesión de DRF
+    'DOC_EXPANSION': 'none', # Opciones: 'none', 'list', 'full'
+    'APIS_SORTER': 'alpha',
+    'OPERATIONS_SORTER': 'alpha',
+    'JSON_EDITOR': True,
+    'SHOW_REQUEST_HEADERS': True,
+    'SUPPORTED_SUBMIT_METHODS': ['get', 'post', 'put', 'delete', 'patch'],
+    'VALIDATOR_URL': None, # Deshabilita el validador de Swagger
+}
+

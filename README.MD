@@ -24,6 +24,8 @@ Acceder al Panel de Administración
 
 Pruebas Unitarias
 
+Documentación de la API con Swagger UI
+
 Requisitos
 Python 3.x
 
@@ -45,7 +47,7 @@ source venv/bin/activate  # En Linux/macOS
 
 Instala las dependencias:
 
-pip install django djangorestframework djangorestframework-simplejwt django-filter
+pip install django djangorestframework djangorestframework-simplejwt django-filter drf-yasg
 
 (O si tienes un requirements.txt actualizado, usa pip install -r requirements.txt)
 
@@ -205,3 +207,17 @@ Pruebas Unitarias
 Para ejecutar las pruebas unitarias y verificar el correcto funcionamiento de la API, asegúrate de tener tu entorno virtual activado y ejecuta el siguiente comando en la raíz del proyecto:
 
 python manage.py test tareas
+
+Documentación de la API con Swagger UI
+La API cuenta con documentación interactiva generada automáticamente utilizando drf-yasg y Swagger UI. Puedes explorarla en tu navegador una vez que el servidor esté corriendo.
+
+Acceso a Swagger UI: http://127.0.0.1:8000/swagger/
+
+Acceso a Redoc: http://127.0.0.1:8000/redoc/
+
+Capturas de Pantalla de Swagger UI
+Aquí se muestran algunas vistas de la interfaz interactiva de Swagger UI, demostrando la documentación de los endpoints y su funcionalidad.
+
+Vista General de Endpoints
+Detalle de Listado de Tareas (GET /api/tareas/)
+Creación de Tarea (POST /api/tareas/)

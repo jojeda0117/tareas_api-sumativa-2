@@ -1,43 +1,60 @@
 from rest_framework import viewsets
 from rest_framework import permissions
-from rest_framework import filters # Importamos filters para la paginación de búsqueda
-from django_filters.rest_framework import DjangoFilterBackend # Importamos DjangoFilterBackend
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Tarea
 from .serializers import TareaSerializer
 
-# ViewSet para manejar todas las operaciones CRUD del modelo Tarea
 class TareaViewSet(viewsets.ModelViewSet):
     """
-    API ViewSet para listar, crear, recuperar, actualizar y eliminar tareas.
-    Permisos: Solo usuarios autenticados pueden acceder.
-    Filtros: Permite filtrar por 'completado' y buscar por 'titulo' o 'descripcion'.
-    Paginación: Implementada automáticamente por REST Framework.
+    Conjunto de Vistas (ViewSet) para gestionar las tareas en la API.
+
+    Proporciona operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+    para el modelo Tarea.
+
+    - **Listar Tareas (GET /api/tareas/):**
+        Retorna una lista de todas las tareas del usuario autenticado.
+        Los superusuarios pueden ver todas las tareas.
+        Permite filtrar, buscar y ordenar.
+    - **Crear Tarea (POST /api/tareas/):**
+        Crea una nueva tarea asignándola automáticamente al usuario autenticado.
+    - **Obtener Detalle de Tarea (GET /api/tareas/{id}/):**
+        Retorna los detalles de una tarea específica del usuario autenticado.
+    - **Actualizar Tarea (PUT/PATCH /api/tareas/{id}/):**
+        Actualiza una tarea existente del usuario autenticado.
+    - **Eliminar Tarea (DELETE /api/tareas/{id}/):**
+        Elimina una tarea del usuario autenticado.
+
+    **Permisos:**
+    Requiere autenticación JWT. Solo usuarios autenticados pueden acceder.
+
+    **Filtros:**
+    - `completado`: `true` o `false` (ej. `?completado=true`)
+    **Búsqueda:**
+    - `search`: Texto para buscar en `titulo` o `descripcion` (ej. `?search=comprar`)
+    **Ordenamiento:**
+    - `ordering`: Campo por el cual ordenar (`titulo`, `completado`).
+      Usa `-` para orden descendente (ej. `?ordering=-titulo`)
     """
     queryset = Tarea.objects.all()
     serializer_class = TareaSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    # Configuración de filtros
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['completado'] # Permite filtrar tareas por el campo 'completado'
-    search_fields = ['titulo', 'descripcion'] # Permite buscar por 'titulo' o 'descripcion'
-    ordering_fields = ['titulo', 'completado'] # Permite ordenar por 'titulo' o 'completado'
-
-    # Configuración de paginación (automáticamente provista por REST Framework)
-    # Por defecto, REST Framework usa una paginación simple.
-    # Para configurar una paginación específica, puedes añadir:
-    # pagination_class = YourCustomPaginationClass (si defines una)
+    filterset_fields = ['completado']
+    search_fields = ['titulo', 'descripcion']
+    ordering_fields = ['titulo', 'completado']
 
     def perform_create(self, serializer):
         """
-        Asigna el propietario (owner) de la tarea al usuario que realiza la solicitud.
+        Crea una nueva instancia de Tarea y asigna el usuario autenticado como su propietario.
         """
         serializer.save(owner=self.request.user)
 
     def get_queryset(self):
         """
-        Asegura que un usuario solo pueda ver sus propias tareas,
-        a menos que sea un superusuario.
+        Retorna el queryset de tareas, filtrando por el usuario autenticado.
+        Los superusuarios pueden ver todas las tareas.
         """
         if self.request.user.is_superuser:
             return Tarea.objects.all()
